@@ -24,4 +24,4 @@ The measurements of benchmark in Obliv-C rely on Absentminded Crypto Kit. We onl
 #### Step
 run command `python LinS.py --opt -e 10 -s 1 -i 5 -M 2` (resp. `BinS.py`, `AlmS.py`) to run v2 of LinS (resp. BinS, AlmS) with 10 input array length, 1 search element, 5 repeation in 2 party setting, take out `--opt` to run v1.
 
-run command `python QS.py --opt -n 10 -i 5` (resp. `PSI.py`) to run v2 of QS (resp. PSI) with 10 input array length (half for each party), 5 repeation in 2 party setting, take out `--opt` to run v1.
+run command `python QS.py --opt -n 10 -i 5 -M 2` (resp. `PSI.py`) to run v2 of QS (resp. PSI) with 10 input array length (half for each party), 5 repeation in 2 party setting, take out `--opt` to run v1.
