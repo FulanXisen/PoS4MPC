@@ -17,7 +17,7 @@ The measurements of benchmark in Obliv-C rely on Absentminded Crypto Kit. We onl
 1. put the files you want to execute in benchmark/oblivc into absentminded-crypto-kit/src/
 2. measurements using absentminded-crypto-kit's template in absentminded-crypto-kit/test/
 3. update makefile
-### Using MPyc
+### Using MPyC
 #### Requirements
 - install `Python`, version 3.x
 - install Python's `mpyc` package using `pip`
