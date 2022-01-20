@@ -1,0 +1,95 @@
+#include "BinS.oh"
+#include <math.h>
+
+obliv int binary_search(OcCopy * cpy, void* result, void* haystack, size_t haystack_length, void* needle, block_cmp_function fn) {
+	oram * o = oram_from_array(ORAM_TYPE_AUTO, cpy, haystack_length, haystack);
+
+	obliv int index = binary_search_oram(cpy, result, o, needle, fn);
+
+	oram_free(o);
+
+	return index;
+}
+
+obliv int binary_search_oram(OcCopy * cpy, void* result, oram * haystack, void* needle, block_cmp_function fn) {
+	int upper_bound = log2(oram_size(haystack)) + 1;
+
+	obliv int index = -1;
+	obliv int iimin = 0;
+	obliv int iimax = oram_size(haystack) - 1;
+	obliv int iimid;
+
+	obliv int *aa;
+	obliv int *bb = ((obliv int *)needle);
+	obliv bool olt;
+	obliv bool oeq;
+	void * temp_element = calloc(1, cpy->eltsize);
+	for (int ii = 0; ii < upper_bound; ii++) {
+		iimid = (iimin + iimax) / 2;
+		oram_read(temp_element, haystack, iimid);
+		aa = (obliv int *)temp_element;
+		oeq = *aa == *bb;
+		obliv if (oeq) {
+			ocCopy(cpy, result, temp_element);
+			index = iimid;
+		}else{
+			olt = *aa < *bb;
+			obliv if (olt) {
+				iimin = iimid + 1;
+			}else {
+				iimax = iimid;
+			}
+		}
+		
+	}
+	free(temp_element);
+	return index;
+}
+
+obliv int binary_search_opt(OcCopy * cpy, void* result, void* haystack, size_t haystack_length, void* needle, block_cmp_function fn) {
+	oram * o = oram_from_array(ORAM_TYPE_AUTO, cpy, haystack_length, haystack);
+
+	obliv int index = binary_search_oram_opt(cpy, result, o, needle, fn);
+
+	oram_free(o);
+
+	return index;
+}
+
+obliv int binary_search_oram_opt(OcCopy * cpy, void* result, oram * haystack, void* needle, block_cmp_function fn) {
+	int upper_bound = log2(oram_size(haystack)) + 1;
+
+	obliv int index = -1;
+	obliv int iimin = 0;
+	obliv int iimax = oram_size(haystack) - 1;
+	obliv int iimid;
+
+	obliv int *aa;
+	obliv int *bb = ((obliv int *)needle);
+	obliv bool olt;
+	obliv bool oeq;
+	void * temp_element = calloc(1, cpy->eltsize);
+	bool eq;
+	for (int ii = 0; ii < upper_bound; ii++) {
+		iimid = (iimin + iimax) / 2;
+		oram_read(temp_element, haystack, iimid);
+		aa = (obliv int *)temp_element;
+		oeq = *aa == *bb;
+		revealOblivBool(&eq, oeq, 0);
+		if (eq) {
+			ocCopy(cpy, result, temp_element);
+			index = iimid;
+			break;
+		}else{
+			olt = *aa < *bb;
+			obliv if (olt) {
+				iimin = iimid + 1;
+			}else {
+				iimax = iimid;
+			}
+		}
+		
+	}
+	free(temp_element);
+	return index;
+}

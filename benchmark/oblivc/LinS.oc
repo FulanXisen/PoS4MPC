@@ -1,0 +1,24 @@
+#include "LinS.oh"
+
+void linear_search(obliv int *idx, obliv int *val, obliv int *arr, int arr_size){
+    *idx = -1;
+    for (int i = 0; i < arr_size; i++) {
+        obliv if (*val == arr[i]){
+            *idx = i;
+        }
+    }
+}
+
+
+void linear_search_opt(obliv int *idx, obliv int *val, obliv int *arr, int arr_size){
+    *idx = -1;
+    obliv bool ofind; bool find;
+    for (int i = 0; i < arr_size; i++) {
+        ofind = *val == arr[i];
+        revealOblivBool(&find, ofind, 0);
+        if (find){
+            *idx = i;
+            break;
+        }
+    }
+}

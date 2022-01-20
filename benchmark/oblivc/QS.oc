@@ -1,0 +1,117 @@
+#include "QS.oh"
+#include <obliv.h>
+#include <copy.oh>
+#include "oram.oh"
+
+void swap(obliv int* a, obliv int* b) {
+  obliv int t = *a;
+  *a = *b;
+  *b = t;
+}
+void swap(int* a, int* b) {
+  int t = *a;
+  *a = *b;
+  *b = t;
+}
+
+int partition(obliv int * data, int * output, int n, osort_cmp_function cmpFn){
+  int i = 0;
+  obliv int *pi = data + n -1;
+  obliv bool oleq; bool leq;
+  for (int j = 0; j < n-1; j++){
+    oleq = *(data+j) < *pi;
+    revealOblivBool(&leq, oleq, 0);
+    if (leq) {
+      swap(data+i, data+j);
+      swap(output+i, output+j);
+      i = i + 1;
+    }
+  }
+  swap(data+i, pi);
+  swap(output+i, output+n-1);
+
+  return i;
+}
+
+void oqsort_main(obliv int * data, int * output, int len, osort_cmp_function cmpFn){
+  if (1 < len) {
+    // p is the index of pivot
+    int p = partition(data, output, len, cmpFn);
+    // sort first p value
+    oqsort_main(data, output, p, cmpFn);
+    // sort last n-p-1 value
+    oqsort_main(data+p+1, output, len-p-1, cmpFn);
+  }
+}
+
+void oqsort(obliv int * data, int *output, size_t end, osort_cmp_function cmpFn){
+  for (int i = 0; i < end; i++){
+    output[i] = i;
+  } 
+  oqsort_main(data, output, end, cmpFn);
+}
+
+
+obliv int partition_std(oram * data, oram* output, obliv int left, obliv int right, int len)  {
+  obliv int i = left;
+  obliv int pi;
+  oram_read(&pi, data, right - 1);
+  obliv bool oleq = true;
+  obliv int ee;
+  obliv int aa;
+  obliv int bb;
+
+  for (int j = 0; j < len; j++){
+    obliv bool in = (j >= left) & ( j < right);
+    obliv if ( in ){
+      oram_read(&ee, data, j);
+      oleq = ee < pi;
+      obliv if (oleq) {
+        oram_read(&aa, data, i);
+        oram_read(&bb, data, j);
+        oram_write(data, &aa, j);
+        oram_write(data, &bb, i);
+        oram_read(&aa, output, i);
+        oram_read(&bb, output, j);
+        oram_write(output, &aa, j);
+        oram_write(output, &bb, i);
+        i = i + 1;
+      }
+    }
+  }
+  oram_read(&bb, data, i);
+  oram_write(data, &pi, i);
+  oram_write(data, &bb, right-1);
+
+  oram_read(&aa, output, i);
+  oram_read(&bb, output, right-1);
+  oram_write(output, &bb, i);
+  oram_write(output, &aa, right-1);
+  return i;
+}
+
+void oqsort_std_main(oram * data, oram* output, obliv int left, obliv int right, int len)  {
+  obliv bool oend = 1 < (right - left);
+  bool end;
+  // have to reveal, otherwise execution won't terminate
+  revealOblivBool(&end, oend, 0);
+  if (end) {
+    // p is the index of pivot
+    obliv int p = partition_std(data, output, left, right, len);
+    // sort first p value
+    oqsort_std_main(data, output, left, p, len);
+    // sort last n-p-1 value
+    oqsort_std_main(data, output, p+1, right,len);
+  }
+}
+
+void oqsort_std(oram *data, oram* output, size_t end, osort_cmp_function cmpFn){
+
+  for (int i = 0; i < end; i++){
+    oram_write(output, &i, i);
+  }  
+
+  oqsort_std_main(data, output, 0, end, end);
+
+}
+

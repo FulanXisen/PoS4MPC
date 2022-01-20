@@ -1,0 +1,30 @@
+#include "PSI.oh"
+#include "obliv.oh"
+// arr alice and arr bob should have the same arr length
+void naive_psi(obliv int *intersection, obliv int *aarr, obliv int *barr, int size){
+    obliv bool omatch;
+    for (int i = 0; i < size; i++) {
+        intersection[i] = -1;
+        for (int j = 0; j < size; j++) {
+            omatch = ( aarr[i] == barr[j] );
+            obliv if ( omatch ) {
+                intersection[i] = barr[j];
+            }
+        }
+    }
+}
+
+void naive_psi_opt(obliv int *intersection, obliv int *aarr, obliv int *barr, int size){
+    obliv bool omatch; bool match;
+    for (int i = 0; i < size; i++) {
+        intersection[i] = -1;
+        for (int j = 0; j < size; j++) {
+            omatch = (aarr[i] == barr[j]);
+            revealOblivBool(&match, omatch, 0);
+            if ( match ) {
+                intersection[i] = barr[j];
+                break;
+            }
+        } 
+    }
+}

@@ -1,0 +1,10 @@
+#ifndef LinS_OH
+#define LinS_OH
+
+#include <obliv.oh>
+#include <obliv_common.h>
+
+void linear_search(obliv int *idx, obliv int *val, obliv int *arr, int size);
+void linear_search_opt(obliv int *idx, obliv int *val, obliv int *arr, int size);
+
+#endif 

@@ -1,0 +1,20 @@
+#ifndef BINS_OH
+#define BINS_OH
+
+#include <stdbool.h>
+#include <obliv.oh>
+#include "oram.oh"
+#include <obliv_common.h>
+#include <copy.oh>
+
+typedef obliv int (* block_cmp_function)(OcCopy *, void * a, void * b) obliv;
+
+obliv int binary_search(OcCopy * cpy, void * result, void * haystack, size_t haystack_length, void * needle, block_cmp_function fn);
+
+obliv int binary_search_oram(OcCopy * cpy, void * result, oram * haystack, void * needle, block_cmp_function fn);
+
+obliv int binary_search_opt(OcCopy * cpy, void * result, void * haystack, size_t haystack_length, void * needle, block_cmp_function fn);
+
+obliv int binary_search_oram_opt(OcCopy * cpy, void * result, oram * haystack, void * needle, block_cmp_function fn);
+
+#endif
