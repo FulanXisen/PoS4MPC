@@ -3,7 +3,7 @@
 experimental result of PoS4SMPC
 
 - examples/: the folder contains security policy examples of programs
-- benchmark/: the folder contains source files of benchmark in Obliv-C and MPyC
+- benchmark/: the folder contains source files of benchmark using Obliv-C and MPyC
 - performance.pdf: detail performance data in Obliv-C and MPyC
 
 ## Executing programs
@@ -15,8 +15,8 @@ The measurements of benchmark in Obliv-C rely on Absentminded Crypto Kit. We onl
 
 #### Step
 1. put the files you want to execute in benchmark/oblivc into absentminded-crypto-kit/src/
-2. writing measurements using absentminded-crypto-kit's template and put it into absentminded-crypto-kit/test/
-3. update makefile commands
+2. measurements using absentminded-crypto-kit's template in absentminded-crypto-kit/test/
+3. update makefile
 ### Using MPyc
 #### Requirements
 - install `Python`, version 3.x
